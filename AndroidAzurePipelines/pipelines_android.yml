@@ -30,7 +30,6 @@ trigger:
 variables:
   - name: 'apkFilePath'
     value: '**/*${{ parameters.BuildType }}*.apk'
-  - group: AppCenterConfig
 
 stages:
   - stage:

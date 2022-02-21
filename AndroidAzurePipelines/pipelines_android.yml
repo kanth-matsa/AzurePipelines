@@ -100,19 +100,7 @@ stages:
               jdkArchitectureOption: 'x64'
               checkStyleRunAnalysis: false
               findBugsRunAnalysis: false
-
-          - task: AndroidSigning@3
-            continueOnError: false
-            displayName: 'Android Signing'
-            inputs:
-              apkFiles: $(apkFilePath)
-              apksign: true
-              apksignerKeystoreFile: '${{ parameters.BuildType }}.jks'
-              apksignerKeystorePassword: $(apksignerKeystorePassword)
-              apksignerKeystoreAlias: $(apksignerKeystoreAlias)
-              apksignerKeyPassword: $(apksignerKeyPassword)
-              apksignerArguments: '--verbose'
-              zipalign: false
+          
           - task: CopyFiles@2
             displayName: 'Copying APK files'
             continueOnError: false
@@ -126,38 +114,3 @@ stages:
             inputs:
               pathtoPublish: '$(Build.artifactStagingDirectory)'
               ArtifactName: ${{ parameters.BuildType }}
-
-
-  - stage: 
-    displayName: 'Distribution stage'
-    jobs:
-      - job:
-        displayName: 'Android ${{ parameters.BuildType }} distribute job'
-        continueOnError: false
-        variables:
-        - group: AppCenterConfig
-        pool:
-          vmImage: ${{ parameters.OS }}
-        steps:
-        - checkout: none
-        - task: DownloadBuildArtifacts@0
-          continueOnError: false
-          displayName: 'Downloading Published artifacts'
-          inputs:
-            buildType: 'current'
-            downloadType: 'specific'
-            itemPattern: '**/*${{ parameters.BuildType }}*.apk'
-            downloadPath: '$(System.ArtifactsDirectory)'
-
-        - task: AppCenterDistribute@3
-          condition: eq('${{ parameters.BuildType }}', 'release' )
-          continueOnError: false
-          displayName: 'Distributing ${{ parameters.BuildType }} build'
-          inputs:
-            serverEndpoint: MyAppCenterConnection
-            appSlug: '$(appSlug)'
-            appFile: '$(System.ArtifactsDirectory)/${{ parameters.BuildType }}/app/${{ parameters.BuildType }}/*${{ parameters.BuildType }}*.apk'
-            releaseNotesOption: 'input'
-            releaseNotesInput: '$(Build.SourceVersionMessage)'
-            destinationType: 'groups'
-            distributionGroupId: '$(androidStagingTestersGroup)'

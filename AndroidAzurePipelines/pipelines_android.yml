@@ -10,7 +10,7 @@ parameters:
   - name: OS
     displayName: Operating System
     type: string
-    default: windows-latest
+    default: macOS-latest
     values:
       - windows-latest
       - vs2017-win2016
@@ -91,14 +91,11 @@ stages:
               workingDirectory: ''
               gradleWrapperFile: 'AndroidAzurePipelines/gradlew'
               gradleOptions: '-Xmx3072m'
-              publishJUnitResults: false
               tasks: assemble${{ parameters.BuildType }}
-              codeCoverageToolOption: 'None'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: 'default'
+              jdkVersionOption: '1.8'
               jdkArchitectureOption: 'x64'
-              checkStyleRunAnalysis: false
-              findBugsRunAnalysis: false
+              publishJUnitResults: true
           
           - task: CopyFiles@2
             displayName: 'Copying APK files'

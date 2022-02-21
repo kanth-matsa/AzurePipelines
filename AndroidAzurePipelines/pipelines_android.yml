@@ -89,7 +89,7 @@ stages:
             continueOnError: false
             inputs:
               workingDirectory: ''
-              gradleWrapperFile: 'AndroidAzurePipelines/gradle/wrapper'
+              gradleWrapperFile: 'AndroidAzurePipelines/gradlew'
               gradleOptions: '-Xmx3072m'
               publishJUnitResults: false
               tasks: assemble${{ parameters.BuildType }}

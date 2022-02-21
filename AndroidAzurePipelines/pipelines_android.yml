@@ -47,8 +47,8 @@ stages:
         steps:
           - powershell: |
                 $BasePath = "$(Build.SourcesDirectory)"
-                $BuildGradlePath = "${BasePath}appuild.gradle"
-                $BuildGradleUpdatedPath = "${BasePath}appuild.gradle.updated"
+                $BuildGradlePath = "${BasePath}appbuild.gradle"
+                $BuildGradleUpdatedPath = "${BasePath}appbuild.gradle.updated"
 
                 # $File = get-content $BuildGradlePath
                 # foreach ($line in $File){
